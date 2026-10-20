@@ -1,0 +1,177 @@
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-12 col-lg-8">
+
+      <div class="card shadow border-0">
+        <div class="card-header bg-primary text-white p-3">
+          <!-- CAMBIO: título dinámico -->
+          <h1 class="h4 mb-0">
+            {{ editandoId() !== null ? 'Editar estudiante' : 'Registro de estudiantes' }}
+          </h1>
+        </div>
+
+        <div class="card-body p-4">
+          <!-- CAMBIO: texto dinámico -->
+          <p class="text-secondary">
+            {{ editandoId() !== null
+              ? 'Modifica los datos y guarda los cambios.'
+              : 'Completa los datos para agregar un estudiante.' }}
+          </p>
+
+          <form (submit)="agregar($event)">
+            <div class="row g-3">
+
+              <div class="col-md-6">
+                <label for="nombre" class="form-label">
+                  Nombre
+                </label>
+                <input
+                  id="nombre"
+                  type="text"
+                  class="form-control"
+                  placeholder="Ej. Luis"
+                  [formField]="formulario.nombre"
+                >
+              </div>
+
+              <div class="col-md-6">
+                <label for="apellido" class="form-label">
+                  Apellido
+                </label>
+                <input
+                  id="apellido"
+                  type="text"
+                  class="form-control"
+                  placeholder="Ej. Pérez"
+                  [formField]="formulario.apellido"
+                >
+              </div>
+
+              <div class="col-12">
+                <label for="correo" class="form-label">
+                  Correo electrónico
+                </label>
+                <input
+                  id="correo"
+                  type="email"
+                  class="form-control"
+                  placeholder="nombre@correo.com"
+                  [formField]="formulario.correo"
+                >
+              </div>
+
+              <div class="col-md-8">
+                <label for="carrera" class="form-label">
+                  Carrera
+                </label>
+                <select
+                  id="carrera"
+                  class="form-select"
+                  [formField]="formulario.carrera"
+                >
+                  <option value="">Selecciona una carrera</option>
+                  <option value="Ingeniería de Sistemas">
+                    Ingeniería de Sistemas
+                  </option>
+                  <option value="Administración">
+                    Administración
+                  </option>
+                  <option value="Contabilidad">
+                    Contabilidad
+                  </option>
+                </select>
+              </div>
+
+              <div class="col-md-4">
+                <label for="ciclo" class="form-label">
+                  Ciclo
+                </label>
+                <input
+                  id="ciclo"
+                  type="number"
+                  class="form-control"
+                  [formField]="formulario.ciclo"
+                >
+              </div>
+
+              <!-- CAMBIO: botón dinámico + botón cancelar -->
+              <div class="col-12 d-grid gap-2 mt-4">
+                <button type="submit" class="btn btn-primary">
+                  {{ editandoId() !== null ? 'Guardar cambios' : 'Agregar estudiante' }}
+                </button>
+
+                @if (editandoId() !== null) {
+                  <button
+                    type="button"
+                    class="btn btn-outline-secondary"
+                    (click)="cancelar()"
+                  >
+                    Cancelar edición
+                  </button>
+                }
+              </div>
+
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <h2 class="h4 mt-5 mb-3">Estudiantes registrados</h2>
+
+      <!-- CAMBIO: track por id, resaltado y botones Editar / Eliminar -->
+      @for (estudiante of estudiantes(); track estudiante.id) {
+        <div
+          class="card shadow-sm mb-3"
+          [class.border-0]="editandoId() !== estudiante.id"
+          [class.border-primary]="editandoId() === estudiante.id"
+        >
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-start">
+
+              <div>
+                <h3 class="h5">
+                  {{ estudiante.nombre }} {{ estudiante.apellido }}
+                </h3>
+
+                <p class="text-secondary mb-2">
+                  {{ estudiante.correo }}
+                </p>
+
+                <span class="badge bg-primary">
+                  {{ estudiante.carrera }}
+                </span>
+
+                <span class="badge bg-secondary">
+                  Ciclo {{ estudiante.ciclo }}
+                </span>
+              </div>
+
+              <div class="btn-group btn-group-sm">
+                <button
+                  type="button"
+                  class="btn btn-outline-primary"
+                  (click)="editar(estudiante)"
+                >
+                  Editar
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-outline-danger"
+                  (click)="eliminar(estudiante.id)"
+                >
+                  Eliminar
+                </button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      } @empty {
+        <div class="alert alert-info">
+          Todavía no hay estudiantes registrados.
+        </div>
+      }
+
+    </div>
+  </div>
+</div>

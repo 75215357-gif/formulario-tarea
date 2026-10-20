@@ -1,8 +1,8 @@
 import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { ComponeneteForm } from './components/componenete-form/componenete-form';
 
 @Component({
-  imports: [RouterOutlet],
+  imports: [ComponeneteForm],
   selector: 'app-root',
   styleUrl: './app.css',
   templateUrl: './app.html',
